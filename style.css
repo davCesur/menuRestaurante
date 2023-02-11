@@ -82,3 +82,11 @@
 .hide {
     display: none;
 }
+
+#menu li {
+    cursor: pointer;
+}
+
+#menu li :active {
+    background-color: red;
+}

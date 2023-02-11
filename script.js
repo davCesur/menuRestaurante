@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function (event) {
 
-    let foodContainer = document.querySelector('.food-container');
+    // let foodContainer = document.querySelector('.food-container');
 
     let template = document.querySelector("#plantilla-carta")
     let platos = document.querySelector("section#platos div")
@@ -14,20 +14,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
         })
         .then((output) => {
 
-            var cont = 1;
             output.forEach(function (plato) {
-
-                console.log(plato)
 
                 let el = template.content.cloneNode(true);
 
-                el.setAttribute('id', 'plantilla-carta-' + cont)
+                let div = el.querySelector('.plato')
 
-                el.setAttribute('data-veganos', plato.veganos)
-
-                el.setAttribute('data-celiacos', plato.celiacos)
-
-                el.setAttribute('data-intolerantes', plato.intolerantes)
+                div.setAttribute('data-veganos', plato.veganos)
+                div.setAttribute('data-celiacos', plato.celiacos)
+                div.setAttribute('data-intolerantes', plato.intolerantes)
 
                 el.querySelector("h4").textContent = plato.nombrePlato
                 el.querySelector("img").setAttribute("src", plato.imagen)
@@ -36,13 +31,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
                 platos.appendChild(el)
 
-                cont++;
-
             })
 
         }).catch(err => console.error(err))
 
 
+    // Se cogen todos los botones li recorriéndolos y se les mete el evento click.
+    document.querySelectorAll('li[data-filtro]').forEach( li => li.addEventListener('click', function (){ mostrarPlatos(this.getAttribute('data-filtro'))}))
 
     function mostrarPlatos(tipoPlato) {
 
@@ -53,40 +48,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
         } else {
             ocultarTodoPlatos();
 
-            let templateTipoPlato = document.querySelectorAll('[data' + tipoPlato + '=true]');
-
-            for (let i = 0; i < templateTipoPlato.length; i++) {
-                templateTipoPlato[i].classList.remove('hide');
-            }
+            document.querySelectorAll('[data-' + tipoPlato + '=true]').forEach(plato => plato.classList.remove('hide'));
         }
     }
 
     function ocultarTodoPlatos() {
 
-        document.getElementsByClassName('templatePlato').forEach(function (template) {
-
-            template.classList.add('hide');
-
-        })
+        document.querySelectorAll('.plato').forEach(pl => pl.classList.add('hide')) 
 
     }
 
     function mostrarTodoPlatos() {
 
-        document.getElementsByClassName('templatePlato').forEach(function (template) {
-
-            template.classList.remove('hide');
-
-        })
+        document.querySelectorAll('.plato').forEach(pl => pl.classList.remove('hide')) 
 
     }
-
-    document.querySelectorAll('li[data-filtro]').addEventListener('click', function () {
-
-        mostrarPlatos(this.getAttribute('data-filtro'));
-
-
-    });
-
 
 });
